@@ -1,9 +1,15 @@
 package model;
 
 import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQuery(name=Person.GET_ALL_PERSONS_QUERY_NAME, query="SELECT p FROM Person p")
+@NamedQuery(name=Person.GET_ALL_PERSONS_IDS_QUERY_NAME, query="SELECT p.id FROM Person p")
 public class Person extends GenericEntity {
+	
+	public static final String GET_ALL_PERSONS_QUERY_NAME="Person.getAllPersons";
+	public static final String GET_ALL_PERSONS_IDS_QUERY_NAME="Person.getAllPersonsIds";
 	
 	private String userName;
 	private String password;

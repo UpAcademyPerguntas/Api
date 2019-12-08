@@ -15,22 +15,30 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 	
 	@Override
 	@Transactional
-	public void create(Vote vote) {
+	public int create(Vote vote) {
 		
 		if(vote.getId()!=0) {
 			
 			throw new IllegalArgumentException("Id do voto deve ser deixado em branco ou a zero.");
 		}
-		else if(vote.getPerson()!=null && !personServ.getAllIds().contains(vote.getPerson().getId())) {
+		else if(vote.getPerson()==null) {
 			
-			throw new IllegalArgumentException("Id da pessoa associada ao voto não é válida.");
+			throw new IllegalArgumentException("Uma pessoa deve sempre estar associada a um voto.");
 		}
-		else if(vote.getQuestion()!=null && !questionServ.getAllIds().contains(vote.getQuestion().getId())) {
+		else if(!personServ.getAllIds().contains(vote.getPerson().getId())) {
 			
-			throw new IllegalArgumentException("Id da questão associada ao voto não é válida.");
+			throw new IllegalArgumentException("Id da pessoa associada ao voto não existe.");
+		}
+		else if(vote.getQuestion()==null) {
+			
+			throw new IllegalArgumentException("Uma questão deve sempre estar associada a um voto.");
+		}
+		else if(!questionServ.getAllIds().contains(vote.getQuestion().getId())) {
+			
+			throw new IllegalArgumentException("Id da questão associada ao voto não existe.");
 		}
 		
-		repository.create(vote);
+		return repository.create(vote).getId();
 	}
 
 	@Override
@@ -38,15 +46,23 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 	public void update(int id, Vote vote) {
 		
 		if(vote.getId()!=id || !repository.getAllIds().contains(id)) {
-			throw new IllegalArgumentException("Id do voto não é válido.");
+			throw new IllegalArgumentException("Id passado no Path difere do Id passado por parâmetro ou Id não existe.");
 		}
-		else if(vote.getPerson()!=null && !personServ.getAllIds().contains(vote.getPerson().getId())) {
+		else if(vote.getPerson()==null) {
 			
-			throw new IllegalArgumentException("Id da pessoa associada ao voto não é válida.");
+			throw new IllegalArgumentException("Uma pessoa deve sempre estar associada a um voto.");
 		}
-		else if(vote.getQuestion()!=null && !questionServ.getAllIds().contains(vote.getQuestion().getId())) {
+		else if(!personServ.getAllIds().contains(vote.getPerson().getId())) {
 			
-			throw new IllegalArgumentException("Id da questão associada ao voto não é válida.");
+			throw new IllegalArgumentException("Id da pessoa associada ao voto não existe.");
+		}
+		else if(vote.getQuestion()==null) {
+			
+			throw new IllegalArgumentException("Uma questão deve sempre estar associada a um voto.");
+		}
+		else if(!questionServ.getAllIds().contains(vote.getQuestion().getId())) {
+			
+			throw new IllegalArgumentException("Id da questão associada ao voto não existe.");
 		}
 		
 		repository.update(vote);
@@ -57,7 +73,7 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 	public void remove(int id) {
 		
 		if(!repository.getAllIds().contains(id)) {
-			throw new IllegalArgumentException("Id introduzido não é válido.");
+			throw new IllegalArgumentException("Id introduzido não existe.");
 		}
 		
 		repository.remove(id);

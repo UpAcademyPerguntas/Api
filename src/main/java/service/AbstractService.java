@@ -13,7 +13,7 @@ public abstract class AbstractService <T extends EntityRepository<E>, E extends 
 	@Inject
 	protected T repository;
 	
-	public abstract void create(E entity);
+	public abstract int create(E entity);
 	
 	public abstract void update(int id, E entity);
 
@@ -21,7 +21,7 @@ public abstract class AbstractService <T extends EntityRepository<E>, E extends 
 	public E get(int id) {
 		
 		if(!repository.getAllIds().contains(id)) {
-			throw new IllegalArgumentException("Id introduzido não é válido.");
+			throw new IllegalArgumentException("Id introduzido não existe.");
 		}
 		
 		return repository.get(id);

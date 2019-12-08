@@ -18,6 +18,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import model.GenericEntity;
+import model.Person;
 import repository.EntityRepository;
 import service.AbstractService;
 
@@ -42,9 +43,11 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(E entity) {
 		
+		int id;
 		try {
 			
-			service.create(entity);
+			id=service.create(entity);
+			
 		}
 		catch(Exception e) {
 			
@@ -52,7 +55,7 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 		
-		return Response.ok("Nova entidade criada com sucesso.").build();	
+		return Response.ok(id,MediaType.APPLICATION_JSON).build();	
 	}
 	
 	@PUT

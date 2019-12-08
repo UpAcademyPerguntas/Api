@@ -13,18 +13,22 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	
 	@Override
 	@Transactional
-	public void create(Question question) {
+	public int create(Question question) {
 		
 		if(question.getId()!=0) {
 			
 			throw new IllegalArgumentException("Id da questão deve ser deixada em branco ou a zero.");
 		}
-		else if(question.getPerson()!=null && !personServ.getAllIds().contains(question.getPerson().getId())) {
+		else if(question.getPerson()==null) {
 			
-			throw new IllegalArgumentException("Id da pessoa que colocou a questão não é válido.");
+			throw new IllegalArgumentException("Uma pessoa deve sempre estar associada a uma questão.");
+		}
+		else if(!personServ.getAllIds().contains(question.getPerson().getId())) {
+			
+			throw new IllegalArgumentException("Id da pessoa que colocou a questão não existe.");
 		}
 		
-		repository.create(question);
+		return repository.create(question).getId();
 			
 	}
 
@@ -33,11 +37,16 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	public void update(int id, Question question) {
 		
 		if(question.getId()!=id || !repository.getAllIds().contains(id)) {
-			throw new IllegalArgumentException("Id da questão não é válido.");
+			throw new IllegalArgumentException("Id passado no Path difere do Id passado por parâmetro ou Id não existe.");
 		}
-		else if(question.getPerson()!=null && !personServ.getAllIds().contains(question.getPerson().getId())) {
+		else if(question.getPerson()==null) {
 			
-			throw new IllegalArgumentException("Id da pessoa que colocou a questão não é válido.");
+			throw new IllegalArgumentException("Uma pessoa deve sempre estar associada a uma questão.");
+		}
+		
+		else if(!personServ.getAllIds().contains(question.getPerson().getId())) {
+			
+			throw new IllegalArgumentException("Id da pessoa que colocou a questão não existe.");
 		}
 		
 		repository.update(question);
@@ -49,7 +58,7 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	public void remove(int id) {
 		
 		if(!repository.getAllIds().contains(id)) {
-			throw new IllegalArgumentException("Id introduzido não é válido.");
+			throw new IllegalArgumentException("Id introduzido não existe");
 		}
 		
 		//Methods should be added here because if a Question exists in a Vote, the Question cannot be removed before clearing the//

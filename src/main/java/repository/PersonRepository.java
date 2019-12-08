@@ -1,5 +1,7 @@
 package repository;
 
+import java.util.Collection;
+
 import javax.enterprise.context.ApplicationScoped;
 
 import model.Person;
@@ -26,4 +28,15 @@ public class PersonRepository extends EntityRepository<Person> {
 		return Person.GET_ALL_PERSONS_IDS_QUERY_NAME;
 	}
 
+	public Collection<String> getAllPersonsNames() {
+		
+		return  entityManager.createNamedQuery(Person.GET_ALL_PERSONS_NAMES_QUERY_NAME, String.class).getResultList();
+	}
+	
+	public Person getPersonByUserName(String userName) {
+		
+		return entityManager.createNamedQuery(Person.GET_PERSON_BY_USER_NAME_QUERY_NAME, Person.class)
+				.setParameter("userName", userName)
+				.getSingleResult();
+	}
 }

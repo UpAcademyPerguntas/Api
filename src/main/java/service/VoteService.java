@@ -1,5 +1,8 @@
 package service;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -36,6 +39,19 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 		else if(!questionServ.getAllIds().contains(vote.getQuestion().getId())) {
 			
 			throw new IllegalArgumentException("Id da questão associada ao voto não existe.");
+		}
+		
+		Collection<Vote> votesCollection=repository.getAll();
+		Iterator<Vote> votesIterator =votesCollection.iterator();
+		
+		while(votesIterator.hasNext()) {
+			
+			Vote tempVote=votesIterator.next();
+			if(tempVote.getPerson().getId()==vote.getPerson().getId() && tempVote.getQuestion().getId()==vote.getQuestion().getId()) {
+				
+				throw new IllegalArgumentException("A mesma pessoa não pode votar na mesma questão mais do que uma vez.");
+			}
+			
 		}
 		
 		return repository.create(vote).getId();

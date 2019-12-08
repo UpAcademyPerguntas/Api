@@ -61,27 +61,8 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 	@Transactional
 	public void update(int id, Vote vote) {
 		
-		if(vote.getId()!=id || !repository.getAllIds().contains(id)) {
-			throw new IllegalArgumentException("Id passado no Path difere do Id passado por parâmetro ou Id não existe.");
-		}
-		else if(vote.getPerson()==null) {
-			
-			throw new IllegalArgumentException("Uma pessoa deve sempre estar associada a um voto.");
-		}
-		else if(!personServ.getAllIds().contains(vote.getPerson().getId())) {
-			
-			throw new IllegalArgumentException("Id da pessoa associada ao voto não existe.");
-		}
-		else if(vote.getQuestion()==null) {
-			
-			throw new IllegalArgumentException("Uma questão deve sempre estar associada a um voto.");
-		}
-		else if(!questionServ.getAllIds().contains(vote.getQuestion().getId())) {
-			
-			throw new IllegalArgumentException("Id da questão associada ao voto não existe.");
-		}
-		
-		repository.update(vote);
+		//Must be implemented because it's an abstract method in the Superclass, but for Vote there will not be the possibility for update, which mean the user//
+		//will only be able to create or delete the vote.
 	}
 
 	@Override

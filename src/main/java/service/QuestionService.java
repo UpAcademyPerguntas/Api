@@ -1,55 +1,63 @@
 package service;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import model.Question;
 import repository.QuestionRepository;
 
+@RequestScoped
 public class QuestionService extends AbstractService<QuestionRepository,Question>{
 
 	@Inject
-	PersonService personServ;
+	ConferenceService confServ;
+	
+	@Inject
+	VoteService voteServ;
 	
 	@Override
 	@Transactional
-	public int create(Question question) {
+	public Question create(Question question) {
 		
 		if(question.getId()!=0) {
 			
-			throw new IllegalArgumentException("Id da quest„o deve ser deixada em branco ou a zero.");
+			throw new IllegalArgumentException("Id da quest√£o deve ser deixada em branco ou a zero.");
 		}
-		else if(question.getPerson()==null) {
+		else if(question.getConference()==null) {
 			
-			throw new IllegalArgumentException("Uma pessoa deve sempre estar associada a uma quest„o.");
+			throw new IllegalArgumentException("Uma confer√™ncia deve sempre estar associada a uma quest√£o.");
 		}
-		else if(!personServ.getAllIds().contains(question.getPerson().getId())) {
+		else if(!confServ.getAllIds().contains(question.getConference().getId())) {
 			
-			throw new IllegalArgumentException("Id da pessoa que colocou a quest„o n„o existe.");
+			throw new IllegalArgumentException("Id da confer√™ncia √† qual pertence a quest√£o n√£o existe.");
 		}
 		
-		return repository.create(question).getId();
+		return repository.create(question);
 			
 	}
 
 	@Override
 	@Transactional
-	public void update(int id, Question question) {
+	public Question update(int id, Question question) {
 		
 		if(question.getId()!=id || !repository.getAllIds().contains(id)) {
-			throw new IllegalArgumentException("Id passado no Path difere do Id passado por par‚metro ou Id n„o existe.");
+			throw new IllegalArgumentException("Id passado no Path difere do Id passado por par√¢metro ou Id n√£o existe.");
 		}
-		else if(question.getPerson()==null) {
+		else if(question.getConference()==null) {
 			
-			throw new IllegalArgumentException("Uma pessoa deve sempre estar associada a uma quest„o.");
+			throw new IllegalArgumentException("Uma confer√™ncia deve sempre estar associada a uma quest√£o.");
+		}
+		else if(!confServ.getAllIds().contains(question.getConference().getId())) {
+			
+			throw new IllegalArgumentException("Id da confer√™ncia √† qual pertence a quest√£o n√£o existe.");
+			
 		}
 		
-		else if(!personServ.getAllIds().contains(question.getPerson().getId())) {
-			
-			throw new IllegalArgumentException("Id da pessoa que colocou a quest„o n„o existe.");
-		}
-		
-		repository.update(question);
+		return repository.update(question);
 		
 	}
 
@@ -58,14 +66,37 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	public void remove(int id) {
 		
 		if(!repository.getAllIds().contains(id)) {
-			throw new IllegalArgumentException("Id introduzido n„o existe");
+			throw new IllegalArgumentException("Id introduzido n√£o existe");
 		}
 		
-		//Methods should be added here because if a Question exists in a Vote, the Question cannot be removed before clearing the//
-		//the Question from the Vote, so this method is incomplet!!//
+		Collection<Integer> votesList= voteServ.getAllVotesIdsByQuestionId(id); 
+		Iterator<Integer> listIterator=votesList.iterator();
+		
+		while(listIterator.hasNext()) {
+			
+			voteServ.remove(listIterator.next());
+		}
 		
 		repository.remove(id);
 		
+	}
+	
+	@Transactional
+	public Collection<Integer> getAllQuestionsIdsByConferenceId(int id){
+		
+		
+		return repository.getAllQuestionsIdsByConferenceId(id);
+	}
+
+	@Transactional
+	public Collection<Question> getAllQuestionsByConferenceId(int id){
+		
+		if(!confServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id da confer√™ncia n√£o existe.");
+		}
+		
+		return repository.getAllQuestionsByConferenceId(id);
 	}
 
 }

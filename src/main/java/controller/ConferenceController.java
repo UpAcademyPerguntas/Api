@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.DateTimeException;
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -17,15 +18,20 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
-import model.GenericEntity;
-import repository.EntityRepository;
-import service.AbstractService;
+import model.Conference;
+import model.Question;
+import model.User;
+import model.dto.ConferenceDto;
+import model.dto.UserDto;
+import repository.ConferenceRepository;
+import service.ConferenceService;
+import service.UserService;
 
-//If this class (AbstractController) is not made abstract, the @Inject in the variable T service doesn't work (error occurs), WHY??
-public abstract class AbstractController <T extends AbstractService<R,E>, R extends EntityRepository<E>, E extends GenericEntity> {
-
+@Path("conference")
+public class ConferenceController {
+	
 	@Inject
-	protected T service;
+	ConferenceService service;
 	
 	@Context
 	private UriInfo context;
@@ -40,13 +46,17 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(E entity) {
+	public Response create(ConferenceDto conferenceDto) {
 		
-		E ent;
+		Conference conference;
 		try {
 			
-			ent=service.create(entity);
+			conference=service.create(conferenceDto);
 			
+		}
+		catch(DateTimeException dateTimeE) {
+			
+			return Response.status(Status.BAD_REQUEST).entity("Data e/ou hora introduzida(s) inv�lida(s).").build();
 		}
 		catch(Exception e) {
 			
@@ -54,19 +64,23 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 		
-		return Response.ok(ent,MediaType.APPLICATION_JSON).build();	
+		return Response.ok(conference,MediaType.APPLICATION_JSON).build();	
 	}
 	
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(@PathParam("id") int id, E entity) {
+	public Response update(@PathParam("id") int id, ConferenceDto conferenceDto) {
 		
-		E ent;
+		Conference conference;
 		try {
 			
-			ent=service.update(id,entity);
+			conference=service.update(id,conferenceDto);
+		}
+		catch(DateTimeException dateTimeE) {
+			
+			return Response.status(Status.BAD_REQUEST).entity("Data e/ou hora introduzida(s) inv�lida(s).").build();
 		}
 		catch(Exception e) {
 			
@@ -74,16 +88,14 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	
-		return Response.ok(ent,MediaType.APPLICATION_JSON).build();
-	
-		
+		return Response.ok(conference,MediaType.APPLICATION_JSON).build();
 		
 	}
 	
 	@GET
 	@Path("getAll")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<E> getAll() {
+	public Collection<Conference> getAll() {
 		
 		return service.getAll();
 		
@@ -94,10 +106,10 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") int id) {
 		
-		E entity;
+		Conference conference;
 		try {
 	
-			entity=service.get(id);		
+			conference=service.get(id);		
 		}
 		catch (Exception e){
 			
@@ -105,7 +117,7 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 		
-		return Response.ok(entity,MediaType.APPLICATION_JSON).build();
+		return Response.ok(conference,MediaType.APPLICATION_JSON).build();
 		
 	}
 		
@@ -126,6 +138,26 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 		}
 		
 		return Response.ok("Entidade com id: "+id+" apagado com sucesso." ).build();
+	}
+	
+	@GET
+	@Path("/user/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getConferencesByUserId(@PathParam("id") int id) {
+		
+		Collection<Conference> conferencesList;
+		try {
+	
+			conferencesList=service.getAllConferencesByUserId(id);		
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+		
+		return Response.ok(conferencesList,MediaType.APPLICATION_JSON).build();
+		
 	}
 
 }

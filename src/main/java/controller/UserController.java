@@ -17,15 +17,16 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
-import model.GenericEntity;
-import repository.EntityRepository;
-import service.AbstractService;
+import model.User;
+import model.dto.UserDto;
+import repository.UserRepository;
+import service.UserService;
 
-//If this class (AbstractController) is not made abstract, the @Inject in the variable T service doesn't work (error occurs), WHY??
-public abstract class AbstractController <T extends AbstractService<R,E>, R extends EntityRepository<E>, E extends GenericEntity> {
+@Path("user")
+public class UserController  {
 
 	@Inject
-	protected T service;
+	protected UserService service;
 	
 	@Context
 	private UriInfo context;
@@ -40,12 +41,12 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(E entity) {
+	public Response create(UserDto userDto) {
 		
-		E ent;
+		User user;
 		try {
 			
-			ent=service.create(entity);
+			user=service.create(userDto);
 			
 		}
 		catch(Exception e) {
@@ -54,19 +55,41 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 		
-		return Response.ok(ent,MediaType.APPLICATION_JSON).build();	
+		return Response.ok(user,MediaType.APPLICATION_JSON).build();	
+	}
+	
+	@POST
+	@Path("/auth")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response login(UserDto userDto) {
+		
+		User user;
+		try {
+	
+			service.checkIfUserValid(userDto,userDto.getPassword());
+			user=service.getUserByUserName(userDto.getUserName());
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+		}
+		
+		return Response.ok(user,MediaType.APPLICATION_JSON).build();
+		
 	}
 	
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(@PathParam("id") int id, E entity) {
+	public Response update(@PathParam("id") int id, UserDto userDto) {
 		
-		E ent;
+		User user;
 		try {
 			
-			ent=service.update(id,entity);
+			user=service.update(id,userDto);
 		}
 		catch(Exception e) {
 			
@@ -74,7 +97,7 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	
-		return Response.ok(ent,MediaType.APPLICATION_JSON).build();
+		return Response.ok(user,MediaType.APPLICATION_JSON).build();
 	
 		
 		
@@ -83,7 +106,7 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 	@GET
 	@Path("getAll")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<E> getAll() {
+	public Collection<User> getAll() {
 		
 		return service.getAll();
 		
@@ -94,10 +117,10 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("id") int id) {
 		
-		E entity;
+		User user;
 		try {
 	
-			entity=service.get(id);		
+			user=service.get(id);		
 		}
 		catch (Exception e){
 			
@@ -105,7 +128,7 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 		
-		return Response.ok(entity,MediaType.APPLICATION_JSON).build();
+		return Response.ok(user,MediaType.APPLICATION_JSON).build();
 		
 	}
 		
@@ -126,6 +149,6 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 		}
 		
 		return Response.ok("Entidade com id: "+id+" apagado com sucesso." ).build();
-	}
-
+	}	
+	
 }

@@ -13,7 +13,7 @@ import repository.QuestionRepository;
 
 @RequestScoped
 public class QuestionService extends AbstractService<QuestionRepository,Question>{
-
+	
 	@Inject
 	ConferenceService confServ;
 	
@@ -33,7 +33,7 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 			throw new IllegalArgumentException("Uma conferência deve sempre estar associada a uma questão.");
 		}
 		else if(!confServ.getAllIds().contains(question.getConference().getId())) {
-			
+			//create and dont throw exception ?!
 			throw new IllegalArgumentException("Id da conferência à qual pertence a questão não existe.");
 		}
 		

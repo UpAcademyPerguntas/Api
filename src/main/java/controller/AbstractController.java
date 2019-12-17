@@ -18,7 +18,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import model.GenericEntity;
-import model.Person;
 import repository.EntityRepository;
 import service.AbstractService;
 

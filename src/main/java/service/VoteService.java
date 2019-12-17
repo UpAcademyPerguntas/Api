@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -7,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import model.Question;
 import model.Vote;
 import repository.VoteRepository;
 
@@ -32,6 +34,11 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 			
 			throw new IllegalArgumentException("Id da questão associada ao voto não existe.");
 		}
+		
+		Timestamp timeStamp=new Timestamp(System.currentTimeMillis());
+
+		vote.setCreatedAt(timeStamp.getTime());
+		Vote.lastUpdate=timeStamp.getTime();
 		
 		return repository.create(vote);
 	}
@@ -72,4 +79,17 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 		}
 		return repository.getVotesCountByQuestionId(id);
 	}
+	
+	@Transactional
+	public Collection<Long> getAllVotesTime(){
+		
+		return repository.getAllVotesTime();
+	}
+
+	@Transactional
+	public Collection<Vote> getAllNewVotes(Long time){
+		
+		return repository.getAllNewVotes(time);
+	}
+
 }

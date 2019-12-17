@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -35,6 +36,11 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 			
 			throw new IllegalArgumentException("Id da conferência à qual pertence a questão não existe.");
 		}
+		
+		Timestamp timeStamp=new Timestamp(System.currentTimeMillis());
+
+		question.setCreatedAt(timeStamp.getTime());
+		Question.lastUpdate=timeStamp.getTime();
 		
 		return repository.create(question);
 			
@@ -98,5 +104,16 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 		
 		return repository.getAllQuestionsByConferenceId(id);
 	}
+	
+	@Transactional
+	public Collection<Long> getAllQuestionsTime(){
+		
+		return repository.getAllQuestionsTime();
+	}
 
+	@Transactional
+	public Collection<Question> getAllNewQuestions(Long time){
+		
+		return repository.getAllNewQuestions(time);
+	}
 }

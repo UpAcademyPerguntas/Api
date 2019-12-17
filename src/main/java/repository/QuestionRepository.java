@@ -1,5 +1,7 @@
 package repository;
 
+
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -39,6 +41,18 @@ public class QuestionRepository extends EntityRepository<Question> {
 		
 		return entityManager.createNamedQuery(Question.GET_ALL_QUESTIONS_BY_CONFERENCE_ID_QUERY_NAME,Question.class)
 				.setParameter("id", id)
+				.getResultList();
+	}
+	
+	public Collection<Long> getAllQuestionsTime(){
+		
+		return entityManager.createNamedQuery(Question.GET_ALL_QUESTIONS_TIME, Long.class).getResultList();
+	}
+	
+	public Collection<Question> getAllNewQuestions(Long time){
+		
+		return entityManager.createNamedQuery(Question.GET_ALL_NEW_QUESTIONS, Question.class)
+				.setParameter("time", time)
 				.getResultList();
 	}
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import javax.ws.rs.GET;
@@ -21,12 +22,55 @@ public class QuestionController extends AbstractController<QuestionService,Quest
 	@GET
 	@Path("/conference/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@PathParam("id") int id) {
+	public Response getAllQuestionsByConferenceId(@PathParam("id") int id) {
 		
 		Collection<Question> questionsList;
 		try {
 	
 			questionsList=service.getAllQuestionsByConferenceId(id);		
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+		
+		return Response.ok(questionsList,MediaType.APPLICATION_JSON).build();
+		
+	}
+	
+	@GET
+	@Path("/time")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllQuestionsTime() {
+		
+		Collection<Long> timeList;
+		try {
+	
+			timeList=service.getAllQuestionsTime();		
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+		
+		return Response.ok(timeList,MediaType.APPLICATION_JSON).build();
+		
+	}
+	
+	@GET
+	@Path("/time/{time}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllNewQuestions(@PathParam("time") Long time) {
+		
+		Collection<Question> questionsList=null;
+		try {
+			
+			if(time<Question.lastUpdate) {
+				
+				questionsList=service.getAllNewQuestions(time);
+			}
 		}
 		catch (Exception e){
 			

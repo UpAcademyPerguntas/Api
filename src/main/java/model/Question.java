@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -9,6 +11,8 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_IDS_QUERY_NAME, query="SELECT q.id FROM Question q")
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_IDS_BY_CONFERENCE_ID_QUERY_NAME,query="SELECT q.id FROM Question q WHERE q.conference.id= :id")
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_BY_CONFERENCE_ID_QUERY_NAME,query="SELECT q FROM Question q WHERE q.conference.id= :id")
+@NamedQuery(name=Question.GET_ALL_QUESTIONS_TIME, query="SELECT q.createdAt FROM Question q")
+@NamedQuery(name=Question.GET_ALL_NEW_QUESTIONS, query="SELECT q FROM Question q WHERE q.createdAt > :time")
 public class Question extends GenericEntity {
 	
 
@@ -18,11 +22,16 @@ public class Question extends GenericEntity {
 	public static final String GET_ALL_QUESTIONS_IDS_QUERY_NAME="Question.getAllQuestionsIds";
 	public static final String GET_ALL_QUESTIONS_IDS_BY_CONFERENCE_ID_QUERY_NAME="Question.getAllQuestionsIdsByConferenceId";
 	public static final String GET_ALL_QUESTIONS_BY_CONFERENCE_ID_QUERY_NAME="Question.getAllQuestionsByConferenceId";
+	public static final String GET_ALL_QUESTIONS_TIME="Question.getAllQuestionsTime";
+	public static final String GET_ALL_NEW_QUESTIONS="Question.getAllNewQuestions";
 	
 	
 	private String questionContent;
 	@ManyToOne
 	private Conference conference;
+	
+	public static Long lastUpdate;
+	private Long createdAt;
 	
 	public Question() {
 		
@@ -51,6 +60,14 @@ public class Question extends GenericEntity {
 		this.conference=conference;
 	}
 
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+	
 	@Override
 	public String toString() {
 		return "Question [question content=" + questionContent + ", conference=" + conference + "]";

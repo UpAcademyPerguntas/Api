@@ -42,4 +42,16 @@ public class VoteRepository extends EntityRepository<Vote> {
 				.setParameter("id", id)
 				.getSingleResult();
 	}
+	
+	public Collection<Long> getAllVotesTime(){
+		
+		return entityManager.createNamedQuery(Vote.GET_ALL_VOTES_TIME, Long.class).getResultList();
+	}
+	
+	public Collection<Vote> getAllNewVotes(Long time){
+		
+		return entityManager.createNamedQuery(Vote.GET_ALL_NEW_VOTES, Vote.class)
+				.setParameter("time", time)
+				.getResultList();
+	}
 }

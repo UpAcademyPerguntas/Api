@@ -99,8 +99,13 @@ public class UserService {
 			throw new IllegalArgumentException("Id introduzido não existe");
 		}
 		
-		//Methods should be added here because if a User exists in a Conference, the Conference cannot be removed before clearing the//
-		//User from the Conference, but in this case so this method is incompleted!!//
+		Collection<Integer> conferencesIdsList= confServ.getAllConferencesIdsByUserId(id); 
+		Iterator<Integer> listIterator=conferencesIdsList.iterator();
+		
+		while(listIterator.hasNext()) {
+			
+			confServ.remove(listIterator.next());
+		}
 		
 		repository.remove(id);
 
@@ -160,5 +165,12 @@ public class UserService {
     public User getUserByUserName(String userName) {
     	
     	return repository.getUserByUserName(userName);
+    }
+    
+    @Transactional
+    public Collection<String> getAllManagers(){
+    	
+    	String manager="manager";
+    	return repository.getAllManagers(manager);
     }
 }

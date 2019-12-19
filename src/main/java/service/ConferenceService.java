@@ -161,5 +161,16 @@ public class ConferenceService {
 		
 		return repository.getAllConferencesByUserId(id);
 	}
+	
+	@Transactional
+	public Collection<Integer> getAllConferencesIdsByUserId(int id) {
+		
+		if(!userServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id do manager não existe.");
+		}
+		
+		return repository.getAllConferencesIdsByUserId(id);
+	}
 
 }

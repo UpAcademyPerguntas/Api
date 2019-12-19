@@ -131,6 +131,15 @@ public class UserController  {
 		return Response.ok(user,MediaType.APPLICATION_JSON).build();
 		
 	}
+	
+	@GET
+	@Path("getAllManagers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<String> getAllManagers() {
+		
+		return service.getAllManagers();
+		
+	}
 		
 	@DELETE
 	@Path("/{id}")

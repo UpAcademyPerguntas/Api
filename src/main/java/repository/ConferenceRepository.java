@@ -33,4 +33,11 @@ public class ConferenceRepository extends EntityRepository<Conference>{
 				.setParameter("id", id)
 				.getResultList();
 	}
+	
+	public Collection<Integer> getAllConferencesIdsByUserId(int id){
+		
+		return entityManager.createNamedQuery(Conference.GET_ALL_CONFERENCES_IDS_BY_USER_ID,Integer.class)
+				.setParameter("id", id)
+				.getResultList();
+	}
 }

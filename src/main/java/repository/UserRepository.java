@@ -38,5 +38,11 @@ public class UserRepository extends EntityRepository<User>{
 		
 		return entityManager.createNamedQuery(User.GET_ALL_USERS_NAMES_QUERY_NAME, String.class).getResultList();
 	}
-
+	
+	public Collection<String> getAllManagers(String manager){
+		
+		return entityManager.createNamedQuery(User.GET_ALL_MANAGERS_QUERY_NAME, String.class)
+				.setParameter("manager", manager)
+				.getResultList();
+	}
 }

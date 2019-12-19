@@ -13,6 +13,7 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name=Conference.GET_ALL_CONFERENCES_QUERY_NAME, query="SELECT c FROM Conference c")
 @NamedQuery(name=Conference.GET_ALL_CONFERENCES_IDS_QUERY_NAME, query="SELECT c.id FROM Conference c")
 @NamedQuery(name=Conference.GET_ALL_CONFERENCES_BY_USER_ID, query="SELECT distinct c FROM Conference c JOIN c.managersList m WHERE m.id= :id")
+@NamedQuery(name=Conference.GET_ALL_CONFERENCES_IDS_BY_USER_ID,query="SELECT distinct c.id FROM Conference c JOIN c.managersList m WHERE m.id= :id")
 public class Conference extends GenericEntity{
 	
 	private static final long serialVersionUID = 1L;
@@ -20,6 +21,7 @@ public class Conference extends GenericEntity{
 	public static final String GET_ALL_CONFERENCES_QUERY_NAME="Conference.getAllConferences";
 	public static final String GET_ALL_CONFERENCES_IDS_QUERY_NAME="Conference.getAllConferencesIds";
 	public static final String GET_ALL_CONFERENCES_BY_USER_ID="Conference.getAllConferencesByUserId";
+	public static final String GET_ALL_CONFERENCES_IDS_BY_USER_ID ="Conference.getAllConferencesIdsByUserId";
 	
 	private String name;
 	private String description;

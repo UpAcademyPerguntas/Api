@@ -90,7 +90,10 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	@Transactional
 	public Collection<Integer> getAllQuestionsIdsByConferenceId(int id){
 		
-		
+		if(!confServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id da conferência não existe.");
+		}
 		return repository.getAllQuestionsIdsByConferenceId(id);
 	}
 
@@ -112,8 +115,13 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	}
 
 	@Transactional
-	public Collection<Question> getAllNewQuestions(Long time){
+	public Collection<Question> getAllNewQuestions(Long time,int id){
 		
-		return repository.getAllNewQuestions(time);
+		if(!confServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id da conferência não existe.");
+		}
+		
+		return repository.getAllNewQuestions(time,id);
 	}
 }

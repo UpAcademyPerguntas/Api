@@ -45,13 +45,14 @@ public class VoteRepository extends EntityRepository<Vote> {
 	
 	public Collection<Long> getAllVotesTime(){
 		
-		return entityManager.createNamedQuery(Vote.GET_ALL_VOTES_TIME, Long.class).getResultList();
+		return entityManager.createNamedQuery(Vote.GET_ALL_VOTES_TIME_QUERY_NAME, Long.class).getResultList();
 	}
 	
-	public Collection<Vote> getAllNewVotes(Long time){
+	public Collection<Vote> getAllNewVotes(Long time,int id){
 		
-		return entityManager.createNamedQuery(Vote.GET_ALL_NEW_VOTES, Vote.class)
+		return entityManager.createNamedQuery(Vote.GET_ALL_NEW_VOTES_QUERY_NAME, Vote.class)
 				.setParameter("time", time)
+				.setParameter("id", id)
 				.getResultList();
 	}
 }

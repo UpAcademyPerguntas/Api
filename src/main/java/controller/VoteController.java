@@ -59,16 +59,16 @@ public class VoteController extends AbstractController <VoteService,VoteReposito
 	}
 	
 	@GET
-	@Path("/time/{time}")
+	@Path("/question/{id}/time/{time}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllNewVotes(@PathParam("time") Long time) {
+	public Response getAllNewVotes(@PathParam("time") Long time,@PathParam("id") int id) {
 		
 		Collection<Vote> votesList=null;
 		try {
 			
 			if(time<Vote.lastUpdate) {
 				
-				votesList=service.getAllNewVotes(time);
+				votesList=service.getAllNewVotes(time,id);
 			}
 		}
 		catch (Exception e){

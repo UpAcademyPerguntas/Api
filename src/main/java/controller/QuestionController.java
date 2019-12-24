@@ -60,16 +60,16 @@ public class QuestionController extends AbstractController<QuestionService,Quest
 	}
 	
 	@GET
-	@Path("/time/{time}")
+	@Path("/conference/{id}/time/{time}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllNewQuestions(@PathParam("time") Long time) {
+	public Response getAllNewQuestions(@PathParam("time") Long time,@PathParam("id") int id) {
 		
 		Collection<Question> questionsList=null;
 		try {
 			
 			if(time<Question.lastUpdate) {
 				
-				questionsList=service.getAllNewQuestions(time);
+				questionsList=service.getAllNewQuestions(time,id);
 			}
 		}
 		catch (Exception e){

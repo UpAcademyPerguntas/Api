@@ -173,4 +173,18 @@ public class UserService {
     	String manager="manager";
     	return repository.getAllManagers(manager);
     }
+    
+    @Transactional
+    public boolean verifyIfUserNameExists(String userName){
+    	
+    	if(repository.getAllUsersNames().contains(userName)) {
+    		
+    		return true;
+    	}
+    	else {
+    		
+    		return false;
+    	}
+    	
+    }
 }

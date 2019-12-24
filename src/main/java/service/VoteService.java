@@ -67,6 +67,11 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 	@Transactional
 	public Collection<Integer> getAllVotesIdsByQuestionId(int id){
 		
+		if(!questionServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id da questão não existe.");
+		}
+		
 		return repository.getAllVotesIdsByQuestionId(id);
 	}
 
@@ -87,9 +92,14 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 	}
 
 	@Transactional
-	public Collection<Vote> getAllNewVotes(Long time){
+	public Collection<Vote> getAllNewVotes(Long time,int id){
 		
-		return repository.getAllNewVotes(time);
+		if(!questionServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id da questão não existe.");
+		}
+		
+		return repository.getAllNewVotes(time,id);
 	}
 
 }

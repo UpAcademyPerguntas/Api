@@ -11,8 +11,8 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_IDS_QUERY_NAME, query="SELECT q.id FROM Question q")
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_IDS_BY_CONFERENCE_ID_QUERY_NAME,query="SELECT q.id FROM Question q WHERE q.conference.id= :id")
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_BY_CONFERENCE_ID_QUERY_NAME,query="SELECT q FROM Question q WHERE q.conference.id= :id")
-@NamedQuery(name=Question.GET_ALL_QUESTIONS_TIME, query="SELECT q.createdAt FROM Question q")
-@NamedQuery(name=Question.GET_ALL_NEW_QUESTIONS, query="SELECT q FROM Question q WHERE q.createdAt > :time")
+@NamedQuery(name=Question.GET_ALL_QUESTIONS_TIME_QUERY_NAME, query="SELECT q.createdAt FROM Question q")
+@NamedQuery(name=Question.GET_ALL_NEW_QUESTIONS_QUERY_NAME, query="SELECT q FROM Question q WHERE q.createdAt > :time AND q.conference.id = :id")
 public class Question extends GenericEntity {
 	
 
@@ -22,8 +22,8 @@ public class Question extends GenericEntity {
 	public static final String GET_ALL_QUESTIONS_IDS_QUERY_NAME="Question.getAllQuestionsIds";
 	public static final String GET_ALL_QUESTIONS_IDS_BY_CONFERENCE_ID_QUERY_NAME="Question.getAllQuestionsIdsByConferenceId";
 	public static final String GET_ALL_QUESTIONS_BY_CONFERENCE_ID_QUERY_NAME="Question.getAllQuestionsByConferenceId";
-	public static final String GET_ALL_QUESTIONS_TIME="Question.getAllQuestionsTime";
-	public static final String GET_ALL_NEW_QUESTIONS="Question.getAllNewQuestions";
+	public static final String GET_ALL_QUESTIONS_TIME_QUERY_NAME="Question.getAllQuestionsTime";
+	public static final String GET_ALL_NEW_QUESTIONS_QUERY_NAME="Question.getAllNewQuestions";
 	
 	
 	private String questionContent;

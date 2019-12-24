@@ -9,8 +9,8 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name=Vote.GET_ALL_VOTES_IDS_QUERY_NAME, query="SELECT v.id FROM Vote v")
 @NamedQuery(name=Vote.GET_ALL_VOTES_IDS_BY_QUESTION_ID_QUERY_NAME, query="SELECT v.id FROM Vote v WHERE v.question.id= :id")
 @NamedQuery(name=Vote.GET_VOTES_COUNT_BY_QUESTION_ID_QUERY_NAME, query="SELECT COUNT(v.id) FROM Vote v WHERE v.question.id= :id")
-@NamedQuery(name=Vote.GET_ALL_VOTES_TIME, query="SELECT v.createdAt FROM Vote v")
-@NamedQuery(name=Vote.GET_ALL_NEW_VOTES, query="SELECT v FROM Vote v WHERE v.createdAt > :time")
+@NamedQuery(name=Vote.GET_ALL_VOTES_TIME_QUERY_NAME, query="SELECT v.createdAt FROM Vote v")
+@NamedQuery(name=Vote.GET_ALL_NEW_VOTES_QUERY_NAME, query="SELECT v FROM Vote v WHERE v.createdAt > :time AND v.question.id = :id")
 public class Vote extends GenericEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -19,8 +19,8 @@ public class Vote extends GenericEntity {
 	public static final String GET_ALL_VOTES_IDS_QUERY_NAME="Vote.getAllVotesIds";
 	public static final String GET_ALL_VOTES_IDS_BY_QUESTION_ID_QUERY_NAME="Vote.getAllVotesIdsByQuestionId";
 	public static final String GET_VOTES_COUNT_BY_QUESTION_ID_QUERY_NAME="Vote.getVotesCountByQuestionId";
-	public static final String GET_ALL_VOTES_TIME="Vote.getAllVotesTime";
-	public static final String GET_ALL_NEW_VOTES="Vote.getAllNewVotes";
+	public static final String GET_ALL_VOTES_TIME_QUERY_NAME="Vote.getAllVotesTime";
+	public static final String GET_ALL_NEW_VOTES_QUERY_NAME="Vote.getAllNewVotes";
 	
 	@ManyToOne
 	private Question question;

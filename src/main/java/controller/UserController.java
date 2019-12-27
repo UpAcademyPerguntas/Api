@@ -148,7 +148,7 @@ public class UserController  {
 	
 	
 	@GET
-	@Path("getAllManagers")
+	@Path("/getAllManagers")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<String> getAllManagers() {
 		

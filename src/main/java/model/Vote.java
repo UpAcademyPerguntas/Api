@@ -27,6 +27,7 @@ public class Vote extends GenericEntity {
 
 	public static Long lastUpdate;
 	private Long createdAt;
+	private String machineId;
 	
 	public Vote() {
 		
@@ -52,6 +53,14 @@ public class Vote extends GenericEntity {
 
 	public void setCreatedAt(Long createdAt) {
 		this.createdAt = createdAt;
+	}
+	
+	public String getMachineId() {
+		return machineId;
+	}
+
+	public void setMachineId(String machineId) {
+		this.machineId = machineId;
 	}
 	
 	@Override

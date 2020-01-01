@@ -11,6 +11,7 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name=Vote.GET_VOTES_COUNT_BY_QUESTION_ID_QUERY_NAME, query="SELECT COUNT(v.id) FROM Vote v WHERE v.question.id= :id")
 @NamedQuery(name=Vote.GET_ALL_VOTES_TIME_QUERY_NAME, query="SELECT v.createdAt FROM Vote v")
 @NamedQuery(name=Vote.GET_ALL_NEW_VOTES_QUERY_NAME, query="SELECT v FROM Vote v WHERE v.createdAt > :time AND v.question.id = :id")
+@NamedQuery(name=Vote.GET_ALL_VOTES_BY_QUESTION_ID_QUERY_NAME, query="SELECT v FROM Vote v WHERE v.question.id = :id")
 public class Vote extends GenericEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -21,12 +22,13 @@ public class Vote extends GenericEntity {
 	public static final String GET_VOTES_COUNT_BY_QUESTION_ID_QUERY_NAME="Vote.getVotesCountByQuestionId";
 	public static final String GET_ALL_VOTES_TIME_QUERY_NAME="Vote.getAllVotesTime";
 	public static final String GET_ALL_NEW_VOTES_QUERY_NAME="Vote.getAllNewVotes";
+	public static final String GET_ALL_VOTES_BY_QUESTION_ID_QUERY_NAME="Vote.getAllVotesByQuestionId";
 	
 	@ManyToOne
 	private Question question;
 
-	public static Long lastUpdate;
-	private Long createdAt;
+	public static long lastUpdate;
+	private long createdAt;
 	private String machineId;
 	
 	public Vote() {

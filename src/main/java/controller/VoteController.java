@@ -61,7 +61,7 @@ public class VoteController extends AbstractController <VoteService,VoteReposito
 	@GET
 	@Path("/question/{id}/time/{time}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllNewVotes(@PathParam("time") Long time,@PathParam("id") int id) {
+	public Response getAllNewVotes(@PathParam("time") long time,@PathParam("id") int id) {
 		
 		Collection<Vote> votesList=null;
 		try {
@@ -81,5 +81,24 @@ public class VoteController extends AbstractController <VoteService,VoteReposito
 		
 	}
 
+	@GET
+	@Path("/getAll/question/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllVotesByQuestionId(@PathParam("id") int id) {
+		
+		Collection<Vote> votesList=null;
+		try {
+					
+			votesList=service.getAllVotesByQuestionId(id);
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+		
+		return Response.ok(votesList,MediaType.APPLICATION_JSON).build();
+		
+	}
 	
 }

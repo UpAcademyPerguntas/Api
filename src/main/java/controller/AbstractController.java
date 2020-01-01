@@ -75,8 +75,6 @@ public abstract class AbstractController <T extends AbstractService<R,E>, R exte
 		}
 	
 		return Response.ok(ent,MediaType.APPLICATION_JSON).build();
-	
-		
 		
 	}
 	

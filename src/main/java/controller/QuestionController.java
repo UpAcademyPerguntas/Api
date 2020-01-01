@@ -62,7 +62,7 @@ public class QuestionController extends AbstractController<QuestionService,Quest
 	@GET
 	@Path("/conference/{id}/time/{time}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllNewQuestions(@PathParam("time") Long time,@PathParam("id") int id) {
+	public Response getAllNewQuestions(@PathParam("time") long time,@PathParam("id") int id) {
 		
 		Collection<Question> questionsList=null;
 		try {
@@ -82,4 +82,26 @@ public class QuestionController extends AbstractController<QuestionService,Quest
 		
 	}
 	
+	@GET
+	@Path("/conference/{id}/answeredQuestTime/{time}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllNewAnsweredQuestions(@PathParam("time") long time,@PathParam("id") int id) {
+		
+		Collection<Integer> answeredQuestionsList=null;
+		try {
+			
+			if(time<Question.lastAnsweredUpdate) {
+				
+				answeredQuestionsList=service.getAllNewAnsweredQuestions(time, id);
+			}
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+		
+		return Response.ok(answeredQuestionsList,MediaType.APPLICATION_JSON).build();
+		
+	}
 }

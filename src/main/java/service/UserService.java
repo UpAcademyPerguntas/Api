@@ -124,7 +124,7 @@ public class UserService {
         String role=userDto.getRole();
 
         String[] hashCode=passwordToHashcode(password);
-        user.setId(userDto.getId());
+
         //set fields to Entity
         user.setUserName(username); 
         user.setHashcode(hashCode[0]);

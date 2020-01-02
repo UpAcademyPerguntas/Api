@@ -61,4 +61,12 @@ public class VoteRepository extends EntityRepository<Vote> {
 				.setParameter("id", id)
 				.getResultList();
 	}
+	
+	public Long getVotesCountByQuestionIdAndMachineId(int id,String machineId) {
+		
+		return entityManager.createNamedQuery(Vote.GET_VOTES_COUNT_BY_QUESTION_ID_AND_MACHINE_ID,Long.class)
+				.setParameter("id", id)
+				.setParameter("machineId",machineId)
+				.getSingleResult();
+	}
 }

@@ -138,7 +138,7 @@ public class ConferenceService {
 	public Conference convertDto(ConferenceDto conferenceDto) {
 		
 		Conference conference = new Conference();
-		conference.setId(conferenceDto.getId());
+		
 		conference.setName(conferenceDto.getName());
 		conference.setDescription(conferenceDto.getDescription());
 		conference.setLocation(conferenceDto.getLocation());

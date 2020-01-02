@@ -34,7 +34,7 @@ public class VoteService extends AbstractService<VoteRepository,Vote>{
 			
 			throw new IllegalArgumentException("Id da questão associada ao voto não existe.");
 		}
-		else if(repository.getVotesCountByQuestionIdAndMachineId(vote.getId(), vote.getMachineId())>0) {
+		else if(repository.getVotesCountByQuestionIdAndMachineId(vote.getQuestion().getId(), vote.getMachineId())>0) {
 			throw new IllegalArgumentException("Só pode haver um voto por questão.");
 		}
 		

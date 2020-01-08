@@ -139,7 +139,12 @@ public class ConferenceService {
 		
 		Conference conference = new Conference();
 		
+		if(conferenceDto.getId() != 0) {
+			conference.setId(conferenceDto.getId());
+		}
+		
 		conference.setName(conferenceDto.getName());
+		
 		conference.setDescription(conferenceDto.getDescription());
 		conference.setLocation(conferenceDto.getLocation());
 		

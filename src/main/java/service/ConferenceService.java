@@ -139,12 +139,11 @@ public class ConferenceService {
 		
 		Conference conference = new Conference();
 		
-		if(conferenceDto.getId() != 0) {
+		if(conferenceDto.getId()!=0) {
 			conference.setId(conferenceDto.getId());
 		}
 		
 		conference.setName(conferenceDto.getName());
-		
 		conference.setDescription(conferenceDto.getDescription());
 		conference.setLocation(conferenceDto.getLocation());
 		
@@ -152,6 +151,8 @@ public class ConferenceService {
 		conference.setTime(conferenceDto.getHour(), conferenceDto.getMin());
 		
 		conference.setManagersList(conferenceDto.getManagersList());
+		
+		conference.setVideoUrl(conferenceDto.getVideoUrl());
 		
 		return conference;
 	}

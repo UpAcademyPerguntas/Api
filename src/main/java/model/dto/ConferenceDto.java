@@ -23,6 +23,8 @@ public class ConferenceDto extends BaseDto {
 	private int min;
 
 	private Collection<User> managersList;
+	
+	private String videoUrl;
 
 	public String getName() {
 		return name;
@@ -94,6 +96,14 @@ public class ConferenceDto extends BaseDto {
 
 	public void setManagersList(Collection<User> managersList) {
 		this.managersList = managersList;
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 
 	

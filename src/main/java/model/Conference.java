@@ -33,6 +33,8 @@ public class Conference extends GenericEntity{
 	@ManyToMany
 	private Collection<User> managersList;
 	
+	private String videoUrl;
+	
 	public Conference() {
 		
 	}
@@ -104,9 +106,12 @@ public class Conference extends GenericEntity{
 		this.managersList.remove(manager);
 	}
 	
-	public void removeManager(int index) {
-		
-		this.managersList.remove(index);
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
 	}
 
 	@Override

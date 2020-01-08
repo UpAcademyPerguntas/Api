@@ -66,7 +66,7 @@ public class UserService {
     	
 		
 		User user=convertDto(userDto);
-		user.setId(userDto.getId());
+		
 		return repository.update(user);
 	}
 	
@@ -126,7 +126,6 @@ public class UserService {
         String[] hashCode=passwordToHashcode(password);
 
         //set fields to Entity
-        
         user.setUserName(username); 
         user.setHashcode(hashCode[0]);
         user.setSalt(hashCode[1]);

@@ -11,8 +11,9 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_IDS_QUERY_NAME, query="SELECT q.id FROM Question q")
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_IDS_BY_CONFERENCE_ID_QUERY_NAME,query="SELECT q.id FROM Question q WHERE q.conference.id= :id")
 @NamedQuery(name=Question.GET_ALL_QUESTIONS_BY_CONFERENCE_ID_QUERY_NAME,query="SELECT q FROM Question q WHERE q.conference.id= :id")
-@NamedQuery(name=Question.GET_ALL_QUESTIONS_TIME, query="SELECT q.createdAt FROM Question q")
-@NamedQuery(name=Question.GET_ALL_NEW_QUESTIONS, query="SELECT q FROM Question q WHERE q.createdAt > :time")
+@NamedQuery(name=Question.GET_ALL_QUESTIONS_TIME_QUERY_NAME, query="SELECT q.createdAt FROM Question q")
+@NamedQuery(name=Question.GET_ALL_NEW_QUESTIONS_QUERY_NAME, query="SELECT q FROM Question q WHERE q.createdAt > :time AND q.conference.id = :id")
+@NamedQuery(name=Question.GET_ALL_NEW_ANSWERED_QUESTIONS_QUERY_NAME,query="SELECT q FROM Question q WHERE q.answeredAt > :time AND q.conference.id = :id")
 public class Question extends GenericEntity {
 	
 
@@ -22,16 +23,21 @@ public class Question extends GenericEntity {
 	public static final String GET_ALL_QUESTIONS_IDS_QUERY_NAME="Question.getAllQuestionsIds";
 	public static final String GET_ALL_QUESTIONS_IDS_BY_CONFERENCE_ID_QUERY_NAME="Question.getAllQuestionsIdsByConferenceId";
 	public static final String GET_ALL_QUESTIONS_BY_CONFERENCE_ID_QUERY_NAME="Question.getAllQuestionsByConferenceId";
-	public static final String GET_ALL_QUESTIONS_TIME="Question.getAllQuestionsTime";
-	public static final String GET_ALL_NEW_QUESTIONS="Question.getAllNewQuestions";
-	
+	public static final String GET_ALL_QUESTIONS_TIME_QUERY_NAME="Question.getAllQuestionsTime";
+	public static final String GET_ALL_NEW_QUESTIONS_QUERY_NAME="Question.getAllNewQuestions";
+	public static final String GET_ALL_NEW_ANSWERED_QUESTIONS_QUERY_NAME="Question.getAllNewAnsweredQuestions";
 	
 	private String questionContent;
 	@ManyToOne
 	private Conference conference;
 	
-	public static Long lastUpdate;
-	private Long createdAt;
+	private boolean answered;
+	
+	public static long lastAnsweredUpdate;
+	public static long lastUpdate;
+	
+	private long createdAt;
+	private long answeredAt;
 	
 	public Question() {
 		
@@ -59,6 +65,14 @@ public class Question extends GenericEntity {
 	public void setConference(Conference conference) {
 		this.conference=conference;
 	}
+	
+	public boolean isAnswered() {
+		return answered;
+	}
+
+	public void setAnswered(boolean answered) {
+		this.answered = answered;
+	}
 
 	public Long getCreatedAt() {
 		return createdAt;
@@ -68,6 +82,14 @@ public class Question extends GenericEntity {
 		this.createdAt = createdAt;
 	}
 	
+	public long getAnsweredAt() {
+		return answeredAt;
+	}
+
+	public void setAnsweredAt(long answeredAt) {
+		this.answeredAt = answeredAt;
+	}
+
 	@Override
 	public String toString() {
 		return "Question [question content=" + questionContent + ", conference=" + conference + "]";

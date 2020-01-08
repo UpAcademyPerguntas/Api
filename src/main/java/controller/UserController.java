@@ -131,6 +131,30 @@ public class UserController  {
 		return Response.ok(user,MediaType.APPLICATION_JSON).build();
 		
 	}
+	
+	@POST
+	@Path("/userName")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response verifyIfUserNameExists(UserDto userDto) {
+		
+		
+		boolean exists=service.verifyIfUserNameExists(userDto.getUserName());		
+		
+		return Response.ok(exists,MediaType.APPLICATION_JSON).build();
+		
+	}
+	
+	
+	
+	@GET
+	@Path("/getAllManagers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<String> getAllManagers() {
+		
+		return service.getAllManagers();
+		
+	}
 		
 	@DELETE
 	@Path("/{id}")

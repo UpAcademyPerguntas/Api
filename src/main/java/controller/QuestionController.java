@@ -65,16 +65,16 @@ public class QuestionController extends AbstractController<QuestionService, Ques
 	}
 
 	@GET
-	@Path("/time/{time}")
+	@Path("/conference/{id}/time/{time}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllNewQuestions(@PathParam("time") Long time) {
-
-		Collection<Question> questionsList = null;
+	public Response getAllNewQuestions(@PathParam("time") long time,@PathParam("id") int id) {
+		
+		Collection<Question> questionsList=null;
 		try {
-
-			if (time < Question.lastUpdate) {
-
-				questionsList = service.getAllNewQuestions(time);
+			
+			if(time<Question.lastUpdate) {
+				
+				questionsList=service.getAllNewQuestions(time,id);
 			}
 		} catch (Exception e) {
 
@@ -85,23 +85,27 @@ public class QuestionController extends AbstractController<QuestionService, Ques
 		return Response.ok(questionsList, MediaType.APPLICATION_JSON).build();
 
 	}
-
-	@Path("/create")
-	@POST
+	
+	@GET
+	@Path("/conference/{id}/answeredQuestTime/{time}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public String createQuestion(Question question) throws Exception {
-		//System.out.println("slt: " + inputJsonObj.toString());
-		// String conference = (String) inputJsonObj.get("conference");
-		//JSONObject conferenceObject = inputJsonObj.getJSONObject("conference");
-		//String conferenceId = conferenceObject.getString("id");
-		//String questionContent = (String) inputJsonObj.get("questionContent");
-		questionServ.create(question);
-		//System.out.println("Conference Id:" + conferenceId + " & Question Content: " + questionContent);
-		//JSONObject outputJsonObj = new JSONObject();
-		//outputJsonObj.put("output", "Ok, received and saved at database. Going to show on frontend..");
-
-		return "resultado";
+	public Response getAllNewAnsweredQuestions(@PathParam("time") long time,@PathParam("id") int id) {
+		
+		Collection<Integer> answeredQuestionsList=null;
+		try {
+			
+			if(time<Question.lastAnsweredUpdate) {
+				
+				answeredQuestionsList=service.getAllNewAnsweredQuestions(time, id);
+			}
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+		
+		return Response.ok(answeredQuestionsList,MediaType.APPLICATION_JSON).build();
+		
 	}
-
 }

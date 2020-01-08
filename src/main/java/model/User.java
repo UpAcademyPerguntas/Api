@@ -11,6 +11,7 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name=User.GET_ALL_USERS_IDS_QUERY_NAME, query="SELECT u.id FROM User u")
 @NamedQuery(name=User.GET_USER_BY_USER_NAME_QUERY_NAME, query="SELECT u FROM User u WHERE u.userName = :userName")
 @NamedQuery(name=User.GET_ALL_USERS_NAMES_QUERY_NAME, query="SELECT u.userName FROM User u")
+@NamedQuery(name=User.GET_ALL_MANAGERS_QUERY_NAME,query="SELECT u FROM User u WHERE u.role = :manager")
 public class User extends GenericEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -19,6 +20,7 @@ public class User extends GenericEntity {
 	public static final String GET_ALL_USERS_IDS_QUERY_NAME="User.getAllUsersIds";
 	public static final String GET_USER_BY_USER_NAME_QUERY_NAME="User.getUserByUserName";
 	public static final String GET_ALL_USERS_NAMES_QUERY_NAME="User.getAllUsersNames";			
+	public static final String GET_ALL_MANAGERS_QUERY_NAME="User.getAllManagers";
 	
 	private String userName;
 	private String hashcode;

@@ -50,8 +50,11 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	@Transactional
 	public Question update(int id, Question question) {
 		
-		if(question.getId()!=id || !repository.getAllIds().contains(id)) {
+		if(question.getId()!=id) {
 			throw new IllegalArgumentException("Id passado no Path difere do Id passado por parâmetro ou Id não existe.");
+		}
+		else if(!repository.getAllIds().contains(id)) {
+			throw new IllegalArgumentException("Id da questão não existe.");
 		}
 		else if(question.getConference()==null) {
 			
@@ -59,8 +62,16 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 		}
 		else if(!confServ.getAllIds().contains(question.getConference().getId())) {
 			
-			throw new IllegalArgumentException("Id da conferência à qual pertence a questão não existe.");
-			
+			throw new IllegalArgumentException("Id da conferência à qual pertence a questão não existe.");	
+		}
+		
+		if(question.isAnswered()) {
+
+			Timestamp timeStamp=new Timestamp(System.currentTimeMillis());
+
+			question.setAnsweredAt(timeStamp.getTime());
+			Question.lastAnsweredUpdate=timeStamp.getTime();
+
 		}
 		
 		return repository.update(question);
@@ -90,7 +101,10 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	@Transactional
 	public Collection<Integer> getAllQuestionsIdsByConferenceId(int id){
 		
-		
+		if(!confServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id da conferência não existe.");
+		}
 		return repository.getAllQuestionsIdsByConferenceId(id);
 	}
 
@@ -112,8 +126,24 @@ public class QuestionService extends AbstractService<QuestionRepository,Question
 	}
 
 	@Transactional
-	public Collection<Question> getAllNewQuestions(Long time){
+	public Collection<Question> getAllNewQuestions(long time,int id){
 		
-		return repository.getAllNewQuestions(time);
+		if(!confServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id da conferência não existe.");
+		}
+		
+		return repository.getAllNewQuestions(time,id);
+	}
+	
+	@Transactional
+	public Collection<Integer> getAllNewAnsweredQuestions(long time,int id){
+		
+		if(!confServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id da conferência não existe.");
+		}
+		
+		return repository.getAllNewAnsweredQuestions(time,id);
 	}
 }

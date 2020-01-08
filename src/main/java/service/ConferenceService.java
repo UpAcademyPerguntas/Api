@@ -139,6 +139,10 @@ public class ConferenceService {
 		
 		Conference conference = new Conference();
 		
+		if(conferenceDto.getId()!=0) {
+			conference.setId(conferenceDto.getId());
+		}
+		
 		conference.setName(conferenceDto.getName());
 		conference.setDescription(conferenceDto.getDescription());
 		conference.setLocation(conferenceDto.getLocation());
@@ -147,6 +151,8 @@ public class ConferenceService {
 		conference.setTime(conferenceDto.getHour(), conferenceDto.getMin());
 		
 		conference.setManagersList(conferenceDto.getManagersList());
+		
+		conference.setVideoUrl(conferenceDto.getVideoUrl());
 		
 		return conference;
 	}
@@ -160,6 +166,17 @@ public class ConferenceService {
 		}
 		
 		return repository.getAllConferencesByUserId(id);
+	}
+	
+	@Transactional
+	public Collection<Integer> getAllConferencesIdsByUserId(int id) {
+		
+		if(!userServ.getAllIds().contains(id)) {
+			
+			throw new IllegalArgumentException("Id do manager não existe.");
+		}
+		
+		return repository.getAllConferencesIdsByUserId(id);
 	}
 
 }

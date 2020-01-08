@@ -46,13 +46,22 @@ public class QuestionRepository extends EntityRepository<Question> {
 	
 	public Collection<Long> getAllQuestionsTime(){
 		
-		return entityManager.createNamedQuery(Question.GET_ALL_QUESTIONS_TIME, Long.class).getResultList();
+		return entityManager.createNamedQuery(Question.GET_ALL_QUESTIONS_TIME_QUERY_NAME, Long.class).getResultList();
 	}
 	
-	public Collection<Question> getAllNewQuestions(Long time){
+	public Collection<Question> getAllNewQuestions(long time,int id){
 		
-		return entityManager.createNamedQuery(Question.GET_ALL_NEW_QUESTIONS, Question.class)
+		return entityManager.createNamedQuery(Question.GET_ALL_NEW_QUESTIONS_QUERY_NAME, Question.class)
 				.setParameter("time", time)
+				.setParameter("id", id)
+				.getResultList();
+	}
+	
+	public Collection<Integer> getAllNewAnsweredQuestions(long time, int id){
+			
+		return entityManager.createNamedQuery(Question.GET_ALL_NEW_ANSWERED_QUESTIONS_QUERY_NAME,Integer.class)
+				.setParameter("time", time)
+				.setParameter("id", id)
 				.getResultList();
 	}
 }
